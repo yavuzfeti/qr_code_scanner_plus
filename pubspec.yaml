@@ -5,8 +5,8 @@ homepage: https://juliuscanute.com
 repository: https://github.com/juliuscanute/qr_code_scanner
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
-  flutter: ">=1.12.0"
+  sdk: '>=2.18.0 <4.0.0'
+  flutter: ">=3.3.0"
 
 dependencies:
   js: ^0.6.3
@@ -16,7 +16,7 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
-  flutter_lints: ^1.0.4
+  flutter_lints: ^3.0.1
 
 flutter:
   plugin:
