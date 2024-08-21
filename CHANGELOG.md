@@ -1,12 +1,12 @@
-## 2.0.2
+## 2.0.3
 
 - Updated flutter to ">=3.3.0"
 - Updated dart to ">=3.0.0"
 - Migrated from js and html to js_interop and web package
 
-## 2.0.1 Retracted
+## 2.0.0, 2.0.1 and 2.0.2
 
-## 2.0.0 Retracted
+- Retracted
 
 ## 1.0.0
 

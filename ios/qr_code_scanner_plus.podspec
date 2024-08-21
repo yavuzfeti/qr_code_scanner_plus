@@ -4,14 +4,14 @@
 
 Pod::Spec.new do |s|
   s.name             = 'qr_code_scanner_plus'
-  s.version          = '0.2.0'
+  s.version          = '0.2.1'
   s.summary          = 'QR Code Scanner for flutter.'
   s.description      = <<-DESC
 A new Flutter project.
                        DESC
-  s.homepage         = 'https://github.com/juliuscanute/qr_code_scanner_plus'
+  s.homepage         = 'https://github.com/vespr-wallet/qr_code_scanner_plus'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'juliuscanute[*]touchcapture.net' }
+  s.author           = { 'Your Company' => 'all[*]vespr.xyz' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
