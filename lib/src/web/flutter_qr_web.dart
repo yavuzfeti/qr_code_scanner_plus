@@ -9,7 +9,7 @@ import 'package:web/web.dart' as web;
 
 import 'package:flutter/material.dart';
 
-import '../../qr_code_scanner.dart';
+import '../../qr_code_scanner_plus.dart';
 import 'jsqr.dart';
 import 'media.dart';
 
