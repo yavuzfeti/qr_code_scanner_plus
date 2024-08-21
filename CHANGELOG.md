@@ -1,12 +1,12 @@
-## 2.0.1
-
-- Fixed iOS pod not building
-
-## 2.0.0
+## 2.0.2
 
 - Updated flutter to ">=3.3.0"
 - Updated dart to ">=3.0.0"
 - Migrated from js and html to js_interop and web package
+
+## 2.0.1 Retracted
+
+## 2.0.0 Retracted
 
 ## 1.0.0
 
