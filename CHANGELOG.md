@@ -1,3 +1,7 @@
+## 2.0.1
+
+- Fixed iOS pod not building
+
 ## 2.0.0
 
 - Updated flutter to ">=3.3.0"
