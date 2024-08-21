@@ -4,10 +4,11 @@
 @JS('navigator.mediaDevices')
 library media_devices;
 
-import 'package:js/js.dart';
+import 'dart:js_interop';
+import 'package:web/web.dart' as web;
 
 @JS('getUserMedia')
-external Future<dynamic> getUserMedia(UserMediaOptions constraints);
+external JSPromise<web.MediaStream> getUserMedia(UserMediaOptions constraints);
 
 @JS()
 @anonymous

@@ -2,9 +2,10 @@
 
 import 'dart:async';
 import 'dart:core';
-import 'dart:html' as html;
-import 'dart:js_util';
+// import 'dart:html' as html;
+import 'dart:js_interop';
 import 'dart:ui' as ui;
+import 'package:web/web.dart' as web;
 
 import 'package:flutter/material.dart';
 
@@ -23,25 +24,25 @@ class WebQrView extends StatefulWidget {
   final PermissionSetCallback? onPermissionSet;
   final CameraFacing? cameraFacing;
 
-  const WebQrView(
-      {Key? key,
-      required this.onPlatformViewCreated,
-      this.onPermissionSet,
-      this.cameraFacing = CameraFacing.front})
-      : super(key: key);
+  const WebQrView({
+    super.key,
+    required this.onPlatformViewCreated,
+    this.onPermissionSet,
+    this.cameraFacing = CameraFacing.front,
+  });
 
   @override
-  _WebQrViewState createState() => _WebQrViewState();
+  State<StatefulWidget> createState() => _WebQrViewState();
 
-  static html.DivElement vidDiv =
-      html.DivElement(); // need a global for the registerViewFactory
+  static web.HTMLDivElement vidDiv =
+      web.HTMLDivElement(); // need a global for the registerViewFactory
 
   static Future<bool> cameraAvailable() async {
     final sources =
-        await html.window.navigator.mediaDevices!.enumerateDevices();
+        await web.window.navigator.mediaDevices.enumerateDevices().toDart;
     // List<String> vidIds = [];
     var hasCam = false;
-    for (final e in sources) {
+    for (final e in sources.toDart) {
       if (e.kind == 'videoinput') {
         // vidIds.add(e['deviceId']);
         hasCam = true;
@@ -52,7 +53,7 @@ class WebQrView extends StatefulWidget {
 }
 
 class _WebQrViewState extends State<WebQrView> {
-  html.MediaStream? _localStream;
+  web.MediaStream? _localStream;
   // html.CanvasElement canvas;
   // html.CanvasRenderingContext2D ctx;
   bool _currentlyProcessing = false;
@@ -63,8 +64,8 @@ class _WebQrViewState extends State<WebQrView> {
   Timer? timer;
   String? code;
   String? _errorMsg;
-  html.VideoElement video = html.VideoElement();
-  String viewID = 'QRVIEW-' + DateTime.now().millisecondsSinceEpoch.toString();
+  web.HTMLVideoElement video = web.HTMLVideoElement();
+  String viewID = 'QRVIEW-${DateTime.now().millisecondsSinceEpoch}';
 
   final StreamController<Barcode> _scanUpdateController =
       StreamController<Barcode>();
@@ -78,8 +79,10 @@ class _WebQrViewState extends State<WebQrView> {
 
     facing = widget.cameraFacing ?? CameraFacing.front;
 
-    // video = html.VideoElement();
-    WebQrView.vidDiv.children = [video];
+    // TODO: old dart:html implementation was doing this which is not possible with web package
+    // WebQrView.vidDiv.children = [video];
+    WebQrView.vidDiv.children.add(video);
+
     // ignore: UNDEFINED_PREFIXED_NAME
     ui.platformViewRegistry
         .registerViewFactory(viewID, (int id) => WebQrView.vidDiv);
@@ -133,13 +136,13 @@ class _WebQrViewState extends State<WebQrView> {
         _controller = QRViewControllerWeb(this);
         widget.onPlatformViewCreated(_controller!);
       }
-      var stream = await promiseToFuture(getUserMedia(constraints));
+      var stream = await getUserMedia(constraints).toDart;
       widget.onPermissionSet?.call(_controller!, true);
       _localStream = stream;
       video.srcObject = _localStream;
       video.setAttribute('playsinline',
           'true'); // required to tell iOS safari we don't want fullscreen
-      await video.play();
+      await video.play().toDart;
     } catch (e) {
       cancel();
       if (e.toString().contains("NotAllowedError")) {
@@ -160,7 +163,7 @@ class _WebQrViewState extends State<WebQrView> {
   Future<void> _stopStream() async {
     try {
       // await _localStream.dispose();
-      _localStream!.getTracks().forEach((track) {
+      _localStream!.getTracks().toDart.forEach((track) {
         if (track.readyState == 'live') {
           track.stop();
         }
@@ -177,16 +180,18 @@ class _WebQrViewState extends State<WebQrView> {
     if (_localStream == null) {
       return null;
     }
-    final canvas =
-        html.CanvasElement(width: video.videoWidth, height: video.videoHeight);
+    final canvas = web.HTMLCanvasElement();
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
     final ctx = canvas.context2D;
     // canvas.width = video.videoWidth;
     // canvas.height = video.videoHeight;
     ctx.drawImage(video, 0, 0);
-    final imgData = ctx.getImageData(0, 0, canvas.width!, canvas.height!);
+    final imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-    final size =
-        Size(canvas.width?.toDouble() ?? 0, canvas.height?.toDouble() ?? 0);
+    final size = Size(canvas.width.toDouble(), canvas.height.toDouble());
     if (size != _size) {
       setState(() {
         _setCanvasSize(size);
