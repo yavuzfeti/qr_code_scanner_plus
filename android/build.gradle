@@ -1,4 +1,4 @@
-group 'net.touchcapture.qr.flutterqr'
+group 'net.touchcapture.qr.flutterqrplus'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -50,7 +50,7 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
     if (project.android.hasProperty('namespace')) {
-        namespace 'net.touchcapture.qr.flutterqr'
+        namespace 'net.touchcapture.qr.flutterqrplus'
     }
 }
 

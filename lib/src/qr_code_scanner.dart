@@ -125,7 +125,7 @@ class _QRViewState extends State<QRView> {
       switch (defaultTargetPlatform) {
         case TargetPlatform.android:
           _platformQrView = AndroidView(
-            viewType: 'net.touchcapture.qr.flutterqr/qrview',
+            viewType: 'net.touchcapture.qr.flutterqrplus/qrview',
             onPlatformViewCreated: _onPlatformViewCreated,
             creationParams:
                 _QrCameraSettings(cameraFacing: widget.cameraFacing).toMap(),
@@ -134,7 +134,7 @@ class _QRViewState extends State<QRView> {
           break;
         case TargetPlatform.iOS:
           _platformQrView = UiKitView(
-            viewType: 'net.touchcapture.qr.flutterqr/qrview',
+            viewType: 'net.touchcapture.qr.flutterqrplus/qrview',
             onPlatformViewCreated: _onPlatformViewCreated,
             creationParams:
                 _QrCameraSettings(cameraFacing: widget.cameraFacing).toMap(),
@@ -150,7 +150,7 @@ class _QRViewState extends State<QRView> {
   }
 
   void _onPlatformViewCreated(int id) {
-    _channel = MethodChannel('net.touchcapture.qr.flutterqr/qrview_$id');
+    _channel = MethodChannel('net.touchcapture.qr.flutterqrplus/qrview_$id');
 
     // Start scan after creation of the view
     final controller = QRViewController._(

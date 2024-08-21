@@ -1,4 +1,4 @@
-#import "FlutterQrPlugin.h"
+#import "FlutterQrPlusPlugin.h"
 
 #if __has_include(<qr_code_scanner_plus/qr_code_scanner_plus-Swift.h>)
 #import <qr_code_scanner_plus/qr_code_scanner_plus-Swift.h>
@@ -6,8 +6,8 @@
 #import "qr_code_scanner_plus-Swift.h"
 #endif
 
-@implementation FlutterQrPlugin
+@implementation FlutterQrPlusPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    [SwiftFlutterQrPlugin registerWithRegistrar:registrar];
+    [SwiftFlutterQrPlusPlugin registerWithRegistrar:registrar];
 }
 @end

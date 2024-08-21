@@ -23,10 +23,10 @@ flutter:
   plugin:
     platforms:
       android:
-        package: net.touchcapture.qr.flutterqr
-        pluginClass: FlutterQrPlugin
+        package: net.touchcapture.qr.flutterqrplus
+        pluginClass: FlutterQrPlusPlugin
       ios:
-        pluginClass: FlutterQrPlugin
+        pluginClass: FlutterQrPlusPlugin
 #      web:
-#        pluginClass: FlutterQrPlugin
+#        pluginClass: FlutterQrPlusPlugin
 #        fileName: flutter_qr_web.dart
