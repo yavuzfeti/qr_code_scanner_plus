@@ -1,3 +1,7 @@
+## 2.0.5
+
+- Fixed additional js_interop issues causing failure to build on web
+
 ## 2.0.4
 
 - Fixed js_interop usage causing failure to build on web
