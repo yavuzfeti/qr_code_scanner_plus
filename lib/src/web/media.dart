@@ -11,26 +11,25 @@ import 'package:web/web.dart' as web;
 external JSPromise<web.MediaStream> getUserMedia(UserMediaOptions constraints);
 
 @JS()
-@anonymous
-class UserMediaOptions {
-  external VideoOptions get video;
+extension type UserMediaOptions._(JSObject _) implements JSObject {
+  external VideoOptions? get video;
 
   external factory UserMediaOptions({VideoOptions? video});
 }
 
 @JS()
-@anonymous
-class VideoOptions {
-  external String get facingMode;
-  // external DeviceIdOptions get deviceId;
+extension type VideoOptions._(JSObject _) implements JSObject {
+  external String? get facingMode;
+  external DeviceIdOptions? get deviceId;
 
-  external factory VideoOptions(
-      {String? facingMode, DeviceIdOptions? deviceId});
+  external factory VideoOptions({
+    String? facingMode,
+    DeviceIdOptions? deviceId,
+  });
 }
 
 @JS()
-@anonymous
-class DeviceIdOptions {
+extension type DeviceIdOptions._(JSObject _) implements JSObject {
   external String get exact;
 
   external factory DeviceIdOptions({String? exact});
