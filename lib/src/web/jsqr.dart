@@ -6,7 +6,6 @@ import 'dart:js_interop';
 @JS('jsQR')
 external Code jsQR(var data, int? width, int? height);
 
-@JS()
-class Code {
+extension type Code._(JSObject _) implements JSObject {
   external String get data;
 }
