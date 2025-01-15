@@ -1,3 +1,8 @@
+## 2.0.7
+
+- [Android] Updated Android AGP to version 8.9
+- [Android] Removed Core Library Desugaring
+
 ## 2.0.6
 
 - Fixed additional js_interop issues causing failure to build on web
