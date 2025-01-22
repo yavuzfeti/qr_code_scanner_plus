@@ -5,6 +5,7 @@ import 'dart:core';
 // import 'dart:html' as html;
 import 'dart:js_interop';
 import 'dart:ui' as ui;
+import 'dart:ui_web' as ui_web;
 import 'package:web/web.dart' as web;
 
 import 'package:flutter/material.dart';
@@ -33,9 +34,6 @@ class WebQrView extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _WebQrViewState();
-
-  static web.HTMLDivElement vidDiv =
-      web.HTMLDivElement(); // need a global for the registerViewFactory
 
   static Future<bool> cameraAvailable() async {
     final sources =
@@ -79,13 +77,7 @@ class _WebQrViewState extends State<WebQrView> {
 
     facing = widget.cameraFacing ?? CameraFacing.front;
 
-    // TODO: old dart:html implementation was doing this which is not possible with web package
-    // WebQrView.vidDiv.children = [video];
-    WebQrView.vidDiv.children.add(video);
-
-    // ignore: UNDEFINED_PREFIXED_NAME
-    ui.platformViewRegistry
-        .registerViewFactory(viewID, (int id) => WebQrView.vidDiv);
+    ui_web.platformViewRegistry.registerViewFactory(viewID, (int id) => video);
     // giving JavaScipt some time to process the DOM changes
     Timer(const Duration(milliseconds: 500), () {
       start();

@@ -58,7 +58,7 @@ class QRView extends StatefulWidget {
 }
 
 class _QRViewState extends State<QRView> {
-  late MethodChannel _channel;
+  MethodChannel? _channel;
   late LifecycleEventHandler _observer;
 
   @override
@@ -87,8 +87,9 @@ class _QRViewState extends State<QRView> {
   }
 
   Future<void> updateDimensions() async {
+    if (_channel == null) return;
     await QRViewController.updateDimensions(
-        widget.key as GlobalKey<State<StatefulWidget>>, _channel,
+        widget.key as GlobalKey<State<StatefulWidget>>, _channel!,
         overlay: widget.overlay);
   }
 
@@ -154,7 +155,7 @@ class _QRViewState extends State<QRView> {
 
     // Start scan after creation of the view
     final controller = QRViewController._(
-        _channel,
+        _channel!,
         widget.key as GlobalKey<State<StatefulWidget>>?,
         widget.onPermissionSet,
         widget.cameraFacing)
