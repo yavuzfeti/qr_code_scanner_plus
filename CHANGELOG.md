@@ -1,7 +1,11 @@
+## 2.0.8
+
+- [WEB] Fixed support for WEB platform (thanks [@mikeesouth](https://github.com/mikeesouth))
+
 ## 2.0.7
 
-- [Android] Updated Android AGP to version 8.9
-- [Android] Removed Core Library Desugaring
+- [Android] Updated Android AGP to version 8.9 (thanks [@SOMBORO](https://github.com/SOMBORO))
+- [Android] Removed Core Library Desugaring (thanks [@SOMBORO](https://github.com/SOMBORO))
 
 ## 2.0.6
 
