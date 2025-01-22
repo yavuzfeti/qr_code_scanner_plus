@@ -1,3 +1,7 @@
+## 2.0.8+1
+
+- Updated package list of supported platforms to include web
+
 ## 2.0.8
 
 - [WEB] Fixed support for WEB platform (thanks [@mikeesouth](https://github.com/mikeesouth))
