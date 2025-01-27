@@ -1,3 +1,10 @@
+## 2.0.9
+
+- Updated QrViewController to self-dispose when the QrView is disposed
+- Fixed WEB support for WASM
+
+Note: The public `dispose()` function for `QRViewController` is now a no-op function and deprecated. You should stop calling it. It will be removed fully in the future.
+
 ## 2.0.8+1
 
 - Updated package list of supported platforms to include web

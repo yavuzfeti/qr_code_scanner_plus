@@ -11,8 +11,7 @@ I am developing a new plugin [mobile_scanner](https://pub.dev/packages/mobile_sc
 # QR Code Scanner
 
 [![pub package](https://img.shields.io/pub/v/qr_code_scanner_plus?include_prereleases)](https://pub.dartlang.org/packages/qr_code_scanner_plus)
-[![Join the chat](https://img.shields.io/discord/829004904600961054)](https://discord.gg/aZujk84f6V)
-[![GH Actions](https://github.com/juliuscanute/qr_code_scanner_plus/workflows/dart/badge.svg)](https://github.com/juliuscanute/qr_code_scanner_plus/actions)
+actions)
 
 A QR code scanner that works on both iOS and Android by natively embedding the platform view within Flutter. The integration with Flutter is seamless, much better than jumping into a native Activity or a ViewController to perform the scan.
 
@@ -114,12 +113,6 @@ class _QRViewExampleState extends State<QRViewExample> {
         result = scanData;
       });
     });
-  }
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
   }
 }
 
