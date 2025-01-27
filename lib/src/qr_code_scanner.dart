@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,7 @@ class QRView extends StatefulWidget {
 
 class _QRViewState extends State<QRView> {
   MethodChannel? _channel;
+  QRViewController? controller;
   late LifecycleEventHandler _observer;
 
   @override
@@ -84,6 +86,7 @@ class _QRViewState extends State<QRView> {
   void dispose() {
     super.dispose();
     WidgetsBinding.instance.removeObserver(_observer);
+    controller?._disposeImpl();
   }
 
   Future<void> updateDimensions() async {
@@ -115,9 +118,8 @@ class _QRViewState extends State<QRView> {
   }
 
   Widget _getPlatformQrView() {
-    Widget _platformQrView;
     if (kIsWeb) {
-      _platformQrView = createWebQrView(
+      return createWebQrView(
         onPlatformViewCreated: widget.onQRViewCreated,
         onPermissionSet: widget.onPermissionSet,
         cameraFacing: widget.cameraFacing,
@@ -125,36 +127,37 @@ class _QRViewState extends State<QRView> {
     } else {
       switch (defaultTargetPlatform) {
         case TargetPlatform.android:
-          _platformQrView = AndroidView(
+          return AndroidView(
             viewType: 'net.touchcapture.qr.flutterqrplus/qrview',
             onPlatformViewCreated: _onPlatformViewCreated,
             creationParams:
                 _QrCameraSettings(cameraFacing: widget.cameraFacing).toMap(),
             creationParamsCodec: const StandardMessageCodec(),
           );
-          break;
         case TargetPlatform.iOS:
-          _platformQrView = UiKitView(
+          return UiKitView(
             viewType: 'net.touchcapture.qr.flutterqrplus/qrview',
             onPlatformViewCreated: _onPlatformViewCreated,
             creationParams:
                 _QrCameraSettings(cameraFacing: widget.cameraFacing).toMap(),
             creationParamsCodec: const StandardMessageCodec(),
           );
-          break;
         default:
           throw UnsupportedError(
               "Trying to use the default qrview implementation for $defaultTargetPlatform but there isn't a default one");
       }
     }
-    return _platformQrView;
   }
 
   void _onPlatformViewCreated(int id) {
+    if (!mounted) {
+      return;
+    }
+
     _channel = MethodChannel('net.touchcapture.qr.flutterqrplus/qrview_$id');
 
     // Start scan after creation of the view
-    final controller = QRViewController._(
+    final newController = QRViewController._(
         _channel!,
         widget.key as GlobalKey<State<StatefulWidget>>?,
         widget.onPermissionSet,
@@ -162,8 +165,12 @@ class _QRViewState extends State<QRView> {
       .._startScan(widget.key as GlobalKey<State<StatefulWidget>>,
           widget.overlay, widget.formatsAllowed);
 
+    // Dispose the previous controller if it exists
+    controller?._disposeImpl();
+    controller = newController;
+
     // Initialize the controller for controlling the QRView
-    widget.onQRViewCreated(controller);
+    widget.onQRViewCreated(newController);
   }
 }
 
@@ -215,7 +222,7 @@ class QRViewController {
       }
     });
   }
-
+  bool disposed = false;
   final MethodChannel _channel;
   final CameraFacing _cameraFacing;
   final StreamController<Barcode> _scanUpdateController =
@@ -320,8 +327,30 @@ class QRViewController {
     }
   }
 
-  /// Stops the camera and disposes the barcode stream.
+  @Deprecated(
+    "Disposing the QRViewController is no longer necessary. The controller will self-dispose when the QRView is un-mounted.",
+  )
   void dispose() {
+    // NO-OP | Function kept for backward compatibility
+    // QRViewController will self-dispose when the QRView is disposed
+    log(
+      "It is not required to call dispose() on QRViewController anymore. It will be auto disposed.",
+      name: "qr_code_scanner_plus",
+      level: 900, // warning
+    );
+  }
+
+  /// Stops the camera and disposes the barcode stream.
+  void _disposeImpl() {
+    if (disposed) {
+      log(
+        "QRViewController was disposed more than once",
+        name: "qr_code_scanner_plus",
+        level: 900, // warning
+      );
+      return;
+    }
+    disposed = true;
     if (defaultTargetPlatform == TargetPlatform.iOS) stopCamera();
     _scanUpdateController.close();
   }

@@ -183,10 +183,4 @@ class _QRViewExampleState extends State<QRViewExample> {
       );
     }
   }
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
-  }
 }

@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:core';
+import 'dart:developer';
 // import 'dart:html' as html;
 import 'dart:js_interop';
 import 'dart:ui' as ui;
@@ -106,6 +107,7 @@ class _WebQrViewState extends State<WebQrView> {
   @override
   void dispose() {
     cancel();
+    _controller?._disposeImpl();
     super.dispose();
   }
 
@@ -253,9 +255,37 @@ class _WebQrViewState extends State<WebQrView> {
 class QRViewControllerWeb implements QRViewController {
   final _WebQrViewState _state;
 
-  QRViewControllerWeb(this._state);
   @override
-  void dispose() => _state.cancel();
+  bool disposed = false;
+
+  QRViewControllerWeb(this._state);
+
+  @Deprecated(
+    "Disposing the QRViewController is no longer necessary. The controller will self-dispose when the QRView is un-mounted.",
+  )
+  @override
+  void dispose() {
+    // NO-OP | Function kept for backward compatibility
+    // QRViewController will self-dispose when the QRView is disposed
+    log(
+      "It is not required to call dispose() on QRViewController anymore. It will be auto disposed.",
+      name: "qr_code_scanner_plus",
+      level: 900, // warning
+    );
+  }
+
+  void _disposeImpl() {
+    if (disposed) {
+      log(
+        "QRViewController was disposed more than once",
+        name: "qr_code_scanner_plus",
+        level: 900, // warning
+      );
+      return;
+    }
+    disposed = true;
+    _state.cancel();
+  }
 
   @override
   Future<CameraFacing> flipCamera() async {
