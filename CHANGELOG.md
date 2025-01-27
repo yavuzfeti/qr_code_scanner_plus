@@ -1,3 +1,7 @@
+## 2.0.9+1
+
+- Fix a bad import causing mobile builds to fail
+
 ## 2.0.9
 
 - Updated QrViewController to self-dispose when the QrView is disposed
