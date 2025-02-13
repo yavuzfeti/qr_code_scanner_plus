@@ -1,3 +1,7 @@
+## 2.0.10
+
+- Improved back camera selection for WEB on mobile
+
 ## 2.0.9+1
 
 - Fix a bad import causing mobile builds to fail

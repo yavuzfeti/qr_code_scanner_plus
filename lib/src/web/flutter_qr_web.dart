@@ -118,14 +118,49 @@ class _WebQrViewState extends State<WebQrView> {
     }
 
     try {
-      var constraints = UserMediaOptions(
-          video: VideoOptions(
-        facingMode: (facing == CameraFacing.front ? 'user' : 'environment'),
-      ));
-      // dart style, not working properly:
-      // var stream =
-      //     await html.window.navigator.mediaDevices.getUserMedia(constraints);
-      // straight JS:
+      final UserMediaOptions constraints;
+      switch (facing) {
+        case CameraFacing.front:
+          constraints = UserMediaOptions(
+            video: VideoOptions(facingMode: 'user'),
+          );
+          break;
+        case CameraFacing.unknown:
+        // fall through
+        case CameraFacing.back:
+          final List<web.MediaDeviceInfo> devices =
+              (await enumerateDevices().toDart).toDart;
+
+          final List<web.MediaDeviceInfo> backCameras = devices
+              .where(
+                (device) =>
+                    device.kind == 'videoinput' &&
+                    device.label.toLowerCase().contains('back'),
+              )
+              .toList();
+
+          // attempt to find a main/primary camera. If none, use last back camera entry if it exists
+          final web.MediaDeviceInfo? idealCameraMediaInfo = backCameras
+                  .where(
+                    (camera) =>
+                        camera.label.toLowerCase().contains('main') ||
+                        camera.label.toLowerCase().contains('primary'),
+                  )
+                  .lastOrNull ??
+              backCameras.lastOrNull;
+
+          constraints = UserMediaOptions(
+            video: idealCameraMediaInfo != null
+                ? VideoOptions(
+                    deviceId:
+                        DeviceIdOptions(exact: idealCameraMediaInfo.deviceId),
+                  )
+                : VideoOptions(
+                    facingMode: "environment",
+                  ),
+          );
+      }
+
       if (_controller == null) {
         _controller = QRViewControllerWeb(this);
         widget.onPlatformViewCreated(_controller!);

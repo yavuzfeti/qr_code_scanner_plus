@@ -10,6 +10,9 @@ import 'package:web/web.dart' as web;
 @JS('getUserMedia')
 external JSPromise<web.MediaStream> getUserMedia(UserMediaOptions constraints);
 
+@JS('enumerateDevices')
+external JSPromise<JSArray<web.MediaDeviceInfo>> enumerateDevices();
+
 @JS()
 extension type UserMediaOptions._(JSObject _) implements JSObject {
   external VideoOptions? get video;
