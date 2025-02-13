@@ -1,6 +1,11 @@
+## 2.0.10+1
+
+- Increased android compile SDK to 35 and removed android test deps 
+
 ## 2.0.10
 
 - Improved back camera selection for WEB on mobile
+- Fixed default overlay for `QrScannerOverlayShape` which was full black instead of translucent
 
 ## 2.0.9+1
 
